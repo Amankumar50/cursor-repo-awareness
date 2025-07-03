@@ -24,5 +24,14 @@ class TestCaseExamples(unittest.TestCase):
         """Test squaring operation"""
         self.assertEqual(5 ** 2, 25)
 
+    def test_power_four_and_multiply_by_12(self):
+        """Test raising a number to the 4th power and multiplying by 12"""
+        num = 2
+        result = (num ** 4) * 12
+        self.assertEqual(result, 192)
+        num = 3
+        result = (num ** 4) * 12
+        self.assertEqual(result, 972)
+
 if __name__ == '__main__':
-    unittest.main() 
+    unittest.main()
