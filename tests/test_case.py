@@ -20,5 +20,9 @@ class TestCaseExamples(unittest.TestCase):
         """Test exponentiation operation"""
         self.assertEqual(2 ** 3, 8)
 
+    def test_square(self):
+        """Test squaring operation"""
+        self.assertEqual(5 ** 2, 25)
+
 if __name__ == '__main__':
     unittest.main() 
