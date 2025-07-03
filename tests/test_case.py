@@ -16,5 +16,9 @@ class TestCaseExamples(unittest.TestCase):
     def test_modulo(self):
         self.assertEqual(9 % 4, 1)
 
+    def test_exponent(self):
+        """Test exponentiation operation"""
+        self.assertEqual(2 ** 3, 8)
+
 if __name__ == '__main__':
     unittest.main() 
