@@ -33,5 +33,11 @@ class TestCaseExamples(unittest.TestCase):
         result = (num ** 4) * 12
         self.assertEqual(result, 972)
 
+    def test_floor_division(self):
+        """Test floor division operation"""
+        self.assertEqual(17 // 5, 3)
+        self.assertEqual(20 // 6, 3)
+        self.assertEqual(15 // 3, 5)
+
 if __name__ == '__main__':
     unittest.main()
