@@ -2,7 +2,17 @@ import unittest
 
 class TestCaseExamples(unittest.TestCase):
     def test_addition(self):
-        self.assertEqual(1 + 1, 2)
+        # Parameterized test cases: (a, b, expected_result)
+        test_cases = [
+            (1, 1, 2),
+            (2, 3, 5),
+            (-1, 1, 0),
+            (100, 200, 300),
+            (0, 0, 0)
+        ]
+        for a, b, expected in test_cases:
+            with self.subTest(a=a, b=b, expected=expected):
+                self.assertEqual(a + b, expected)
 
     def test_subtraction(self):
         self.assertEqual(5 - 3, 2)
@@ -45,6 +55,23 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(abs(5), 5)
         self.assertEqual(abs(0), 0)
         self.assertEqual(abs(-10.5), 10.5)
+
+    def test_negation(self):
+        """Test negation operation"""
+        self.assertEqual(-5, -5)
+        self.assertEqual(-(-5), 5)
+        self.assertEqual(-0, 0)
+        self.assertEqual(-10.5, -10.5)
+        self.assertEqual(-(-10.5), 10.5)
+
+    def test_max_min_operations(self):
+        """Test max and min operations"""
+        self.assertEqual(max(1, 2, 3), 3)
+        self.assertEqual(min(1, 2, 3), 1)
+        self.assertEqual(max(-1, -2, -3), -1)
+        self.assertEqual(min(-1, -2, -3), -3)
+        self.assertEqual(max(5), 5)
+        self.assertEqual(min(5), 5)
 
 if __name__ == '__main__':
     unittest.main()
