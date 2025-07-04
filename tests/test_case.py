@@ -39,5 +39,12 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(20 // 6, 3)
         self.assertEqual(15 // 3, 5)
 
+    def test_absolute_value(self):
+        """Test absolute value operation"""
+        self.assertEqual(abs(-5), 5)
+        self.assertEqual(abs(5), 5)
+        self.assertEqual(abs(0), 0)
+        self.assertEqual(abs(-10.5), 10.5)
+
 if __name__ == '__main__':
     unittest.main()
