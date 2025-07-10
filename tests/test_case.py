@@ -1,5 +1,8 @@
 import unittest
 
+from models import Order
+from service import calculate_total
+
 class TestCaseExamples(unittest.TestCase):
     def test_addition(self):
         # Parameterized test cases: (a, b, expected_result)
@@ -72,6 +75,41 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(min(-1, -2, -3), -3)
         self.assertEqual(max(5), 5)
         self.assertEqual(min(5), 5)
+
+class TestDiscountCalculation(unittest.TestCase):
+    def test_no_discount(self):
+        order = Order(price=100.0, discount_percent=0.0)
+        self.assertEqual(calculate_total(order), 100.0)
+
+    def test_full_discount(self):
+        order = Order(price=100.0, discount_percent=100.0)
+        self.assertEqual(calculate_total(order), 0.0)
+
+    def test_typical_discount(self):
+        order = Order(price=200.0, discount_percent=25.0)
+        self.assertEqual(calculate_total(order), 150.0)
+
+    def test_negative_discount(self):
+        order = Order(price=100.0, discount_percent=-10.0)
+        # Depending on business logic, this could be 110.0 or raise an error. Here, we check for 110.0
+        self.assertEqual(calculate_total(order), 110.0)
+
+    def test_discount_greater_than_100(self):
+        order = Order(price=100.0, discount_percent=150.0)
+        # Depending on business logic, this could be -50.0 or raise an error. Here, we check for -50.0
+        self.assertEqual(calculate_total(order), -50.0)
+
+    def test_zero_price(self):
+        order = Order(price=0.0, discount_percent=50.0)
+        self.assertEqual(calculate_total(order), 0.0)
+
+    def test_floating_point_discount(self):
+        order = Order(price=99.99, discount_percent=12.5)
+        self.assertEqual(calculate_total(order), 87.49)
+
+    def test_large_price_and_discount(self):
+        order = Order(price=1_000_000.0, discount_percent=50.0)
+        self.assertEqual(calculate_total(order), 500_000.0)
 
 if __name__ == '__main__':
     unittest.main()
