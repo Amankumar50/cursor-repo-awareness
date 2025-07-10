@@ -73,8 +73,6 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(min(1, 2, 3), 1)
         self.assertEqual(max(-1, -2, -3), -1)
         self.assertEqual(min(-1, -2, -3), -3)
-        self.assertEqual(max(5), 5)
-        self.assertEqual(min(5), 5)
 
 class TestDiscountCalculation(unittest.TestCase):
     def test_no_discount(self):
