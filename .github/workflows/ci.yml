@@ -25,9 +25,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest
     
     - name: Run tests
       run: |
-        python -m unittest discover tests -v
+        export PYTHONPATH=$PYTHONPATH:.
+        python -c "import sys; print('Python version:', sys.version)"
+        python -c "import os; print('Current dir:', os.getcwd()); print('Files:', os.listdir('.'))"
+        python -m unittest tests.test_case -v
  
