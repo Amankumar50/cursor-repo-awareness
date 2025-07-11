@@ -83,3 +83,35 @@ def calculate_average(values: List[Union[int, float]]) -> float:
         raise TypeError("All values must be numeric")
 
     return round(sum(values) / len(values), PRICE_DECIMAL_PLACES)
+
+
+def calculate_median(values: List[Union[int, float]]) -> float:
+    """
+    Calculate median of a list of numbers.
+
+    Args:
+        values: List of numeric values
+
+    Returns:
+        Median value
+
+    Raises:
+        ValueError: If list is empty
+        TypeError: If values contains non-numeric types
+    """
+    if not values:
+        raise ValueError("Cannot calculate median of empty list")
+
+    if not all(isinstance(v, (int, float)) for v in values):
+        raise TypeError("All values must be numeric")
+
+    sorted_values = sorted(values)
+    n = len(sorted_values)
+    
+    if n % 2 == 0:
+        # Even number of values - average of middle two
+        mid1, mid2 = sorted_values[n // 2 - 1], sorted_values[n // 2]
+        return round((mid1 + mid2) / 2, PRICE_DECIMAL_PLACES)
+    else:
+        # Odd number of values - middle value
+        return round(sorted_values[n // 2], PRICE_DECIMAL_PLACES)
