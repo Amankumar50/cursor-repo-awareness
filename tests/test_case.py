@@ -4,16 +4,11 @@ import math
 from models import Order
 from service import calculate_total
 
+
 class TestCaseExamples(unittest.TestCase):
     def test_addition(self):
         # Parameterized test cases: (a, b, expected_result)
-        test_cases = [
-            (1, 1, 2),
-            (2, 3, 5),
-            (-1, 1, 0),
-            (100, 200, 300),
-            (0, 0, 0)
-        ]
+        test_cases = [(1, 1, 2), (2, 3, 5), (-1, 1, 0), (100, 200, 300), (0, 0, 0)]
         for a, b, expected in test_cases:
             with self.subTest(a=a, b=b, expected=expected):
                 self.assertEqual(a + b, expected)
@@ -32,19 +27,19 @@ class TestCaseExamples(unittest.TestCase):
 
     def test_exponent(self):
         """Test exponentiation operation"""
-        self.assertEqual(2 ** 3, 8)
+        self.assertEqual(2**3, 8)
 
     def test_square(self):
         """Test squaring operation"""
-        self.assertEqual(5 ** 2, 25)
+        self.assertEqual(5**2, 25)
 
     def test_power_four_and_multiply_by_12(self):
         """Test raising a number to the 4th power and multiplying by 12"""
         num = 2
-        result = (num ** 4) * 12
+        result = (num**4) * 12
         self.assertEqual(result, 192)
         num = 3
-        result = (num ** 4) * 12
+        result = (num**4) * 12
         self.assertEqual(result, 972)
 
     def test_floor_division(self):
@@ -123,21 +118,22 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(len(test_list), 5)
         self.assertEqual(max(test_list), 5)
 
+
 class TestBusinessLogicExtensions(unittest.TestCase):
     def test_multiple_discounts(self):
         """Test applying multiple sequential discounts"""
         # First discount: 20% off 100 = 80
         # Second discount: 10% off 80 = 72
         price = 100.0
-        after_first = price * (1 - 20/100)  # 80
-        after_second = after_first * (1 - 10/100)  # 72
+        after_first = price * (1 - 20 / 100)  # 80
+        after_second = after_first * (1 - 10 / 100)  # 72
         self.assertEqual(after_second, 72.0)
 
     def test_tax_calculation(self):
         """Test adding tax after discount"""
         # Price: 100, Discount: 20% = 80, Tax: 10% = 88
-        discounted_price = 100 * (1 - 20/100)  # 80
-        with_tax = discounted_price * (1 + 10/100)  # 88
+        discounted_price = 100 * (1 - 20 / 100)  # 80
+        with_tax = discounted_price * (1 + 10 / 100)  # 88
         self.assertEqual(with_tax, 88.0)
 
     def test_bulk_order_discount(self):
@@ -149,6 +145,7 @@ class TestBusinessLogicExtensions(unittest.TestCase):
         if quantity > 10:
             total *= 0.95  # 5% discount
         self.assertEqual(total, 142.5)
+
 
 class TestDiscountCalculation(unittest.TestCase):
     def test_no_discount(self):
@@ -185,5 +182,6 @@ class TestDiscountCalculation(unittest.TestCase):
         order = Order(price=1_000_000.0, discount_percent=50.0)
         self.assertEqual(calculate_total(order), 500_000.0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
