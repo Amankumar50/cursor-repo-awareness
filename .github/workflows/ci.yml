@@ -11,102 +11,56 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11]
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     
-    - name: Cache pip dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 black mypy pytest pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install pytest pytest-cov flake8 black mypy
     
-    - name: Lint with flake8
+    - name: Run tests
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
-        # exit-zero treats all errors as warnings
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        pytest tests/ -v
     
-    - name: Format check with black
+    - name: Run linting
       run: |
-        black --check --diff . || true
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 || true
     
-    - name: Type check with mypy
+    - name: Check formatting
+      run: |
+        black --check . || true
+    
+    - name: Type checking
       run: |
         mypy . --ignore-missing-imports || true
-    
-    - name: Test with pytest
-      run: |
-        pytest tests/ --cov=. --cov-report=xml --cov-report=html || true
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
-      if: always()
 
   security:
     runs-on: ubuntu-22.04
     needs: test
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.11
+        python-version: "3.11"
     
     - name: Install security tools
       run: |
         pip install bandit safety
     
-    - name: Run security scan with bandit
+    - name: Run security scan
       run: |
-        bandit -r . -f json -o bandit-report.json || true
-    
-    - name: Run safety check
-      run: |
-        safety check --json --output safety-report.json || true
-
-  build:
-    runs-on: ubuntu-22.04
-    needs: [test, security]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.11
-    
-    - name: Build package
-      run: |
-        python setup.py sdist bdist_wheel || true
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist/
-      if: always() 
+        bandit -r . || true
+        safety check || true 
