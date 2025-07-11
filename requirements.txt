@@ -11,13 +11,9 @@ mypy>=1.0.0
 bandit>=1.7.0
 safety>=2.0.0
 
-# Optional: Web framework (if you plan to add web interface)
-# flask>=2.0.0
-# fastapi>=0.100.0
+# Build tools
+build>=0.10.0
+twine>=4.0.0
 
-# Optional: Database (if you plan to add database)
-# sqlalchemy>=2.0.0
-# alembic>=1.0.0
-
-# Optional: Environment management
+# Environment management
 python-dotenv>=1.0.0 
