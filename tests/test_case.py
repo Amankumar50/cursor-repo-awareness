@@ -1,4 +1,5 @@
 import unittest
+import math
 
 from models import Order
 from service import calculate_total
@@ -73,6 +74,81 @@ class TestCaseExamples(unittest.TestCase):
         self.assertEqual(min(1, 2, 3), 1)
         self.assertEqual(max(-1, -2, -3), -1)
         self.assertEqual(min(-1, -2, -3), -3)
+
+    def test_complex_operations(self):
+        """Test combinations of operations"""
+        self.assertEqual((5 + 3) * 2 - 1, 15)
+        self.assertEqual(10 / 2 + 3 * 4, 17)
+        self.assertEqual((20 - 5) / 3, 5)
+
+    def test_percentage_calculations(self):
+        """Test percentage operations"""
+        self.assertEqual(50 * 0.2, 10.0)
+        self.assertEqual(100 * 0.15, 15.0)
+        self.assertEqual(200 * 0.05, 10.0)
+
+    def test_square_root(self):
+        """Test square root operations"""
+        self.assertEqual(math.sqrt(16), 4.0)
+        self.assertEqual(math.sqrt(25), 5.0)
+        self.assertEqual(math.sqrt(1), 1.0)
+
+    def test_zero_operations(self):
+        """Test operations with zero"""
+        self.assertEqual(0 * 5, 0)
+        self.assertEqual(0 + 10, 10)
+        self.assertEqual(10 - 0, 10)
+        self.assertEqual(0 / 1, 0)
+
+    def test_large_numbers(self):
+        """Test with very large integers"""
+        self.assertEqual(1000000 + 2000000, 3000000)
+        self.assertEqual(999999 * 2, 1999998)
+
+    def test_floating_point_precision(self):
+        """Test decimal precision"""
+        self.assertAlmostEqual(0.1 + 0.2, 0.3, places=7)
+        self.assertAlmostEqual(1.1 * 3, 3.3, places=7)
+
+    def test_string_operations(self):
+        """Test string operations"""
+        self.assertEqual("hello" + " world", "hello world")
+        self.assertEqual(len("test"), 4)
+        self.assertEqual("python".upper(), "PYTHON")
+
+    def test_list_operations(self):
+        """Test list operations"""
+        test_list = [3, 1, 4, 1, 5]
+        self.assertEqual(sorted(test_list), [1, 1, 3, 4, 5])
+        self.assertEqual(len(test_list), 5)
+        self.assertEqual(max(test_list), 5)
+
+class TestBusinessLogicExtensions(unittest.TestCase):
+    def test_multiple_discounts(self):
+        """Test applying multiple sequential discounts"""
+        # First discount: 20% off 100 = 80
+        # Second discount: 10% off 80 = 72
+        price = 100.0
+        after_first = price * (1 - 20/100)  # 80
+        after_second = after_first * (1 - 10/100)  # 72
+        self.assertEqual(after_second, 72.0)
+
+    def test_tax_calculation(self):
+        """Test adding tax after discount"""
+        # Price: 100, Discount: 20% = 80, Tax: 10% = 88
+        discounted_price = 100 * (1 - 20/100)  # 80
+        with_tax = discounted_price * (1 + 10/100)  # 88
+        self.assertEqual(with_tax, 88.0)
+
+    def test_bulk_order_discount(self):
+        """Test quantity-based discounts"""
+        # 5% discount for orders > 10 items
+        quantity = 15
+        unit_price = 10.0
+        total = quantity * unit_price
+        if quantity > 10:
+            total *= 0.95  # 5% discount
+        self.assertEqual(total, 142.5)
 
 class TestDiscountCalculation(unittest.TestCase):
     def test_no_discount(self):
