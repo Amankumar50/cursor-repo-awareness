@@ -164,14 +164,14 @@ class TestDiscountCalculation(unittest.TestCase):
         self.assertEqual(calculate_total(order), 150.0)
 
     def test_negative_discount(self):
-        order = Order(price=100.0, discount_percent=-10.0)
-        # Depending on business logic, this could be 110.0 or raise an error. Here, we check for 110.0
-        self.assertEqual(calculate_total(order), 110.0)
+        # Test that negative discount raises validation error
+        with self.assertRaises(Exception):  # InvalidDiscountError
+            Order(price=100.0, discount_percent=-10.0)
 
     def test_discount_greater_than_100(self):
-        order = Order(price=100.0, discount_percent=150.0)
-        # Depending on business logic, this could be -50.0 or raise an error. Here, we check for -50.0
-        self.assertEqual(calculate_total(order), -50.0)
+        # Test that discount > 100% raises validation error
+        with self.assertRaises(Exception):  # InvalidDiscountError
+            Order(price=100.0, discount_percent=150.0)
 
     def test_zero_price(self):
         order = Order(price=0.0, discount_percent=50.0)
